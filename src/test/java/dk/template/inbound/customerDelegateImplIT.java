@@ -1,10 +1,11 @@
 package dk.template.inbound;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openapitools.model.CustomerRequest;
 import org.openapitools.model.CustomerResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
@@ -18,8 +19,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Sql(scripts = {"/schema.sql", "/data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class customerDelegateImplIT {
 
-    @Autowired
+    @LocalServerPort
+    private int port;
+
     private WebTestClient webTestClient;
+
+    @BeforeEach
+    void setup() {
+        webTestClient = WebTestClient.bindToServer()
+                .baseUrl("http://localhost:" + port)
+                .build();
+    }
 
     private CustomerRequest aCustomerRequest() {
         return new CustomerRequest("John Doe", 34, "123 Main Street, Copenhagen", false);

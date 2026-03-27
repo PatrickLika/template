@@ -32,14 +32,17 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
-	testRuntimeOnly 'com.h2database:h2'
+	runtimeOnly 'com.h2database:h2'
 }
 
 openApiGenerate {
 	generatorName = 'spring'
 	inputSpec = "${rootDir}/src/main/java/openapi/customer-api.yaml"
 	outputDir = "${buildDir}/generated"
-
+	additionalProperties = [
+		useSpringBoot3: "true",
+		interfaceOnly: "true"
+	]
 }
 
 sourceSets {

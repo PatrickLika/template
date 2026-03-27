@@ -1,7 +1,7 @@
 package dk.template.service.model;
 
 public record Customer(
-        String id,
+        Long id,
         String name,
         Integer age,
         String address,
